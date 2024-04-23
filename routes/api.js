@@ -6,6 +6,7 @@ const {
   createPost,
   updatePost,
   deletePost,
+  getPostsByUser
 } = require("../db/post.js");
 
 router.get("/posts", async (req, res) => {
@@ -16,6 +17,21 @@ router.get("/posts", async (req, res) => {
     console.error("error on api/posts GET route", error);
   }
 });
+
+
+//new: get posts by user
+router.get('/posts/user', async(req,res)=>{
+  if (req.user){
+    try {
+    const userPosts = await getPostsByUser(req.user.id)
+    res.status(200).send(userPosts)
+    } catch (error) {
+      console.error("error on user GET route", error)
+    }
+  }else{
+    res.status(401).send("you must be logged in to do that")
+  }
+})
 
 router.get("/posts/:id", async (req, res) => {
   try {
@@ -93,5 +109,6 @@ router.delete("/posts/:id", async (req, res) => {
     res.status(401).send("you must be logged in to delete a post ");
   }
 });
+
 
 module.exports = router;

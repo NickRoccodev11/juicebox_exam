@@ -62,10 +62,24 @@ const deletePost = async (id, authorId) => {
   }
 };
 
+const getPostsByUser = async (authorId) => {
+  try {
+    const userPosts = await prisma.Post.findMany({
+      where: {
+        authorId,
+      },
+    });
+    return userPosts;
+  } catch (error) {
+    console.error("error finding user's posts", error)
+  }
+};
+
 module.exports = {
   getAllPosts,
   getPostById,
   createPost,
   updatePost,
   deletePost,
+  getPostsByUser,
 };

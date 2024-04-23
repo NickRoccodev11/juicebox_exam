@@ -25,7 +25,7 @@ function App() {
       <Navbar />
       <h1>JuiceBox</h1>
       <Routes>
-        <Route path='/' element={<Posts allPosts={allPosts} />} />
+        <Route path='/' element={<Posts posts={allPosts} />} />
         <Route path='/login' element={<Login setToken={setToken} />} />
         <Route path='/register' element={<Register setToken={setToken} />} />
         <Route path='/profile' element={<Profile token={token} />} />

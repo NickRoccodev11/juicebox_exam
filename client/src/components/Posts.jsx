@@ -1,11 +1,11 @@
 import React from 'react'
 import SinglePost from './SinglePost'
-const Posts = ({ allPosts }) => {
+const Posts = ({ posts }) => {
   return (
     <div className='all-posts'>
       {
-        allPosts &&
-        allPosts.map(post => {
+        posts &&
+        posts.map(post => {
           return <SinglePost key={post.id} post={post} />
         })
       }
