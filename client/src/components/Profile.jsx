@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import SinglePost from './SinglePost'
+import UpdateForm from './UpdateForm'
 
 const Profile = ({ token }) => {
   const [userPosts, setUserPosts] = useState()
+  const [showUpdateForm, setShowUpdateForm] = useState(null)
 
   useEffect(() => {
     const fetchUserPosts = async () => {
@@ -46,12 +48,25 @@ const Profile = ({ token }) => {
                 return (
                   <div key={post.id}>
                     <SinglePost post={post} />
-                    <button onClick={() => handleDelete(post.id)}>delete post</button>
+                    <button onClick={() => handleDelete(post.id)}>delete post</button><br />
+                    <button onClick={() => setShowUpdateForm(post.id)}>edit post</button>
+                    {
+                      showUpdateForm === post.id &&
+                      <UpdateForm
+                        id={post.id}
+                        title={post.title}
+                        content={post.content}
+                        setShowUpdateForm={setShowUpdateForm}
+                        token={token}
+                        userPosts={userPosts}
+                        setUserPosts={setUserPosts}
+                      />
+                    }
                   </div>
                 )
               })
-
             }
+
           </div> :
           <div>
             <h3> You must be logged in to see your profile</h3>
