@@ -2,10 +2,13 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import SinglePost from './SinglePost'
 import UpdateForm from './UpdateForm'
+import PostForm from './PostForm'
 
 const Profile = ({ token }) => {
   const [userPosts, setUserPosts] = useState()
   const [showUpdateForm, setShowUpdateForm] = useState(null)
+  const [showCreate, setShowCreate]= useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchUserPosts = async () => {
@@ -35,12 +38,17 @@ const Profile = ({ token }) => {
     setUserPosts(prev => prev.filter(post => post.id !== id))
   }
 
-  const navigate = useNavigate()
+  
   return (
     <div className='profile'>
       {
         token ?
           <div>
+            <button onClick={()=>setShowCreate(true)}>Create a new post</button>
+            {
+              showCreate &&
+              <PostForm setUserPosts={setUserPosts} userPosts={userPosts}/>
+            }
             <h2>My Posts</h2>
             {
               userPosts &&
