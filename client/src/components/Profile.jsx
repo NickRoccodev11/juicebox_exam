@@ -47,7 +47,12 @@ const Profile = ({ token }) => {
             <button onClick={()=>setShowCreate(true)}>Create a new post</button>
             {
               showCreate &&
-              <PostForm setUserPosts={setUserPosts} userPosts={userPosts}/>
+              <PostForm
+               setUserPosts={setUserPosts} 
+               userPosts={userPosts}
+               setShowCreate={setShowCreate}
+               token={token}
+               />
             }
             <h2>My Posts</h2>
             {
