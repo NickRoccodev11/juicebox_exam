@@ -48,4 +48,24 @@ const updatePost = async (id, updateData, authorId) => {
   }
 };
 
-module.exports = { getAllPosts, getPostById, createPost, updatePost };
+const deletePost = async (id, authorId) => {
+  try {
+    const deletedPost = await prisma.Post.delete({
+      where: {
+        id,
+        authorId,
+      },
+    });
+    return deletedPost;
+  } catch (error) {
+    console.error("error deleting post", error);
+  }
+};
+
+module.exports = {
+  getAllPosts,
+  getPostById,
+  createPost,
+  updatePost,
+  deletePost,
+};

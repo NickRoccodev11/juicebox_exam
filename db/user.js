@@ -18,7 +18,7 @@ const loginUser = async (username) => {
   try {
     const user = await prisma.User.findUnique({
       where: {
-      username
+        username,
       },
     });
     return user;

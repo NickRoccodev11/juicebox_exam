@@ -4,6 +4,9 @@ const bcrypt = require("bcrypt");
 const { registerUser, loginUser } = require("../db/user.js");
 
 router.post("/register", async (req, res) => {
+  if(!req.body.password || !req.body.username){
+    res.status(400).send("you must provide a username and password to register")
+  }
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 12);
     const newUser = await registerUser(req.body.username, hashedPassword);
@@ -15,6 +18,9 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
+  if(!req.body.password || !req.body.username){
+    res.status(400).send("you must provide a username and password to login")
+  }
   try {
     const user = await loginUser(req.body.username);
     if (user) {
@@ -25,9 +31,7 @@ router.post("/login", async (req, res) => {
       if (matchedPassword) {
         const token = jwt.sign({ id: user.id }, process.env.JWT);
         res.status(200).send({ token });
-      } else {
-        res.send("incorrect credentials");
-      }
+      } 
     } else {
       res.send("user not found");
     }
