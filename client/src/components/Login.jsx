@@ -36,7 +36,8 @@ const Login = ({ setToken }) => {
 
   }
   return (
-    <div className='form'>
+    <div className='form-container'>
+ <div className='form'>
       <h2>Login</h2>
       <form onSubmit={(e) => handleSubmit(e)} >
         <label >Username:</label><br />
@@ -67,6 +68,8 @@ const Login = ({ setToken }) => {
         <p>{message}</p>
       }
     </div>
+    </div>
+   
   )
 }
 

@@ -25,7 +25,7 @@ const PostForm = ({ userPosts, setUserPosts, setShowCreate, token }) => {
   }
 
   return (
-    <div>
+    <div className='form'>
       <form onSubmit={(e) => handleSubmit(e)}>
         <label>Title:</label><br />
         <input
