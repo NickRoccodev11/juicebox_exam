@@ -4,8 +4,10 @@ const bcrypt = require("bcrypt");
 const { registerUser, loginUser } = require("../db/user.js");
 
 router.post("/register", async (req, res) => {
-  if(!req.body.password || !req.body.username){
-    res.status(400).send("you must provide a username and password to register")
+  if (!req.body.password || !req.body.username) {
+    res
+      .status(400)
+      .send({ msg: "you must provide a username and password to register" });
   }
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 12);
@@ -18,8 +20,10 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  if(!req.body.password || !req.body.username){
-    res.status(400).send("you must provide a username and password to login")
+  if (!req.body.password || !req.body.username) {
+    res
+      .status(400)
+      .send({ msg: "you must provide a username and password to login" });
   }
   try {
     const user = await loginUser(req.body.username);
@@ -31,9 +35,9 @@ router.post("/login", async (req, res) => {
       if (matchedPassword) {
         const token = jwt.sign({ id: user.id }, process.env.JWT);
         res.status(200).send({ token });
-      } 
+      }
     } else {
-      res.send("user not found");
+      res.send({ msg: "user not found" });
     }
   } catch (error) {
     console.error("error on auth/login route", error);

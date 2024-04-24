@@ -1,8 +1,12 @@
-import {useState} from 'react'
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Login = ({setToken}) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+const Login = ({ setToken }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [message, setMessage] = useState('')
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,11 +19,21 @@ const Login = ({setToken}) => {
         username,
         password
       })
-    })
+    });
     const loggedUser = await res.json();
-    setToken(loggedUser.token)
-    setPassword('')
-    setUsername('')
+    if (loggedUser.token) {
+      setToken(loggedUser.token);
+      setPassword('');
+      setUsername('');
+      setIsLoggedIn(true);
+      setMessage('')
+    } else {
+      if (loggedUser.msg) {
+        setMessage(loggedUser.msg)
+      }
+
+    }
+
   }
   return (
     <div className='form'>
@@ -41,6 +55,17 @@ const Login = ({setToken}) => {
         /><br />
         <button>Login</button>
       </form>
+      {
+        isLoggedIn &&
+        <>
+          <p>SuccesssFul Login!</p>
+          <button onClick={() => navigate('/profile')}>Go to Profile</button>
+        </>
+      }
+      {
+        message &&
+        <p>{message}</p>
+      }
     </div>
   )
 }

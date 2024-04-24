@@ -1,8 +1,11 @@
 import { useState } from 'react'
+import {useNavigate} from 'react-router-dom'
 
 const Register = ({setToken}) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [isRegistered, setIsRegistered] = useState(false)
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,9 +20,13 @@ const Register = ({setToken}) => {
       })
     })
     const newUser = await res.json();
-    setToken(newUser.token)
-    setPassword('')
-    setUsername('')
+    if(newUser.token){
+      setToken(newUser.token)
+      setPassword('')
+      setUsername('')
+      setIsRegistered(true)
+    }
+    
   }
   return (
     <div className='form'>
@@ -41,6 +48,13 @@ const Register = ({setToken}) => {
         /><br />
         <button>Register</button>
       </form>
+      {
+        isRegistered &&
+        <>  
+        <p>Successful Registration!</p>
+        <button onClick={()=>navigate('/profile')}>Go to Profile</button>
+        </>
+      }
     </div>
   )
 }
