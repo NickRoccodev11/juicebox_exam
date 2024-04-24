@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Login from './components/Login'
 import Register from './components/Register'
@@ -9,16 +9,24 @@ import Posts from './components/Posts'
 function App() {
   const [allPosts, setAllPosts] = useState([])
   const [token, setToken] = useState('')
-  console.log("TOKEN", token)
+  const location = useLocation()
+  const [currentPage, setCurrentPage] = useState('/')
+
   useEffect(() => {
-    const fetchAllPosts = async () => {
-      const res = await fetch('http://localhost:8000/api/posts')
-      const postsdata = await res.json()
-      console.log(postsdata)
-      setAllPosts(postsdata)
+    setCurrentPage(location.pathname)
+  }, [location.pathname])
+
+  useEffect(() => {
+    if (currentPage === '/') {
+      const fetchAllPosts = async () => {
+        const res = await fetch('http://localhost:8000/api/posts')
+        const postsdata = await res.json()
+        console.log(postsdata)
+        setAllPosts(postsdata)
+      }
+      fetchAllPosts()
     }
-    fetchAllPosts()
-  }, [])
+  }, [currentPage])
 
   return (
     <div className='app'>

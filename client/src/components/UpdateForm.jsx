@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const UpdateForm = ({ id, title, content, setShowUpdateForm, token, userPosts, setUserPosts }) => {
+const UpdateForm = ({ id, title, content, setShowUpdateForm, token, setUserPosts }) => {
   const [newTitle, setNewTitle] = useState(title)
   const [newContent, setNewContent] = useState(content)
 

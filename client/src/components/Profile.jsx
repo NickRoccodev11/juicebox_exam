@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 import SinglePost from './SinglePost'
 import UpdateForm from './UpdateForm'
 import PostForm from './PostForm'
 
-const Profile = ({ token }) => {
+const Profile = ({ token}) => {
   const [userPosts, setUserPosts] = useState()
   const [showUpdateForm, setShowUpdateForm] = useState(null)
-  const [showCreate, setShowCreate]= useState(false)
+  const [showCreate, setShowCreate] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const Profile = ({ token }) => {
           }
         })
         const userPostData = await res.json();
-        console.log(userPostData)
+     
         setUserPosts(userPostData);
       }
     }
@@ -28,7 +28,7 @@ const Profile = ({ token }) => {
   }, [])
 
   const handleDelete = async (id) => {
-    const res = await fetch(`http://localhost:8000/api/posts/${id}`, {
+     await fetch(`http://localhost:8000/api/posts/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -38,21 +38,21 @@ const Profile = ({ token }) => {
     setUserPosts(prev => prev.filter(post => post.id !== id))
   }
 
-  
+
   return (
     <div className='profile'>
       {
         token ?
           <div>
-            <button onClick={()=>setShowCreate(true)}>Create a new post</button>
+            <button onClick={() => setShowCreate(true)}>Create a new post</button>
             {
               showCreate &&
               <PostForm
-               setUserPosts={setUserPosts} 
-               userPosts={userPosts}
-               setShowCreate={setShowCreate}
-               token={token}
-               />
+                setUserPosts={setUserPosts}
+                userPosts={userPosts}
+                setShowCreate={setShowCreate}
+                token={token}
+              />
             }
             <h2>My Posts</h2>
             {
@@ -61,8 +61,8 @@ const Profile = ({ token }) => {
                 return (
                   <div key={post.id}>
                     <SinglePost post={post} />
-                    <button onClick={() => handleDelete(post.id)}>delete post</button><br />
-                    <button onClick={() => setShowUpdateForm(post.id)}>edit post</button>
+
+                    <button onClick={() => setShowUpdateForm(post.id)}>edit post</button><br />
                     {
                       showUpdateForm === post.id &&
                       <UpdateForm
@@ -71,10 +71,10 @@ const Profile = ({ token }) => {
                         content={post.content}
                         setShowUpdateForm={setShowUpdateForm}
                         token={token}
-                        userPosts={userPosts}
                         setUserPosts={setUserPosts}
                       />
                     }
+                    <button onClick={() => handleDelete(post.id)}>delete post</button>
                   </div>
                 )
               })
