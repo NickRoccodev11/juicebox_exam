@@ -41,18 +41,21 @@ button {
   margin-bottom: 8px;
   ;
 }
-.form{
+
+.form {
   background-color: rgb(153, 221, 107);
-  padding:20px 0px;
-  width:400px;
-  display:flex;
+  padding: 20px 0px;
+  width: 400px;
+  display: flex;
   flex-direction: column;
   align-items: center;
 }
-.form-container{
+
+.form-container {
   display: flex;
   justify-content: center;
 }
-input{
+
+input {
   margin-bottom: 10px;
 }
