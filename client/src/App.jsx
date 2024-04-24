@@ -21,6 +21,7 @@ function App() {
       const fetchAllPosts = async () => {
         const res = await fetch('http://localhost:8000/api/posts')
         const postsdata = await res.json()
+        console.log(postsdata)
         setAllPosts(postsdata)
       }
       fetchAllPosts()

@@ -1,7 +1,15 @@
 const { prisma } = require("./index");
 
 const getAllPosts = async () => {
-  const allPosts = await prisma.Post.findMany({});
+  const allPosts = await prisma.Post.findMany({
+    include: {
+      author: {
+        select: {
+          username: true,
+        },
+      },
+    },
+  });
   return allPosts;
 };
 
@@ -71,7 +79,7 @@ const getPostsByUser = async (authorId) => {
     });
     return userPosts;
   } catch (error) {
-    console.error("error finding user's posts", error)
+    console.error("error finding user's posts", error);
   }
 };
 
