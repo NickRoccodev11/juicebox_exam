@@ -40,8 +40,7 @@ const UpdateForm = ({ id, title, content, setShowUpdateForm, token, setUserPosts
           onChange={(e) => setNewTitle(e.target.value)}
         /><br />
         <label> new content </label><br />
-        <input
-          type="text"
+        <textarea
           value={newContent}
           onChange={(e) => setNewContent(e.target.value)}
         /><br />

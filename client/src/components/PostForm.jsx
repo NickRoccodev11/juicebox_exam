@@ -34,8 +34,7 @@ const PostForm = ({ userPosts, setUserPosts, setShowCreate, token }) => {
           onChange={(e) => setTitle(e.target.value)}
         /><br />
         <label>Content</label><br />
-        <input
-          type="text"
+        <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
         /><br />
