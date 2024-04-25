@@ -1,12 +1,19 @@
 import React from 'react'
 import SinglePost from './SinglePost'
-const Posts = ({ posts }) => {
+const Posts = ({ allPosts, setAllPosts, token, currentUser }) => {
   return (
     <div className='all-posts'>
       {
-        posts &&
-        posts.map(post => {
-          return <SinglePost key={post.id} post={post} />
+        allPosts &&
+        allPosts.map(post => {
+          return <SinglePost
+            key={post.id}
+            setAllPosts={setAllPosts}
+            post={post}
+            allPosts={allPosts}
+            token={token}
+            currentUser={currentUser}
+          />
         })
       }
     </div>

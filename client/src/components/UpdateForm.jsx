@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const UpdateForm = ({ id, title, content, setShowUpdateForm, token, setUserPosts }) => {
+const UpdateForm = ({ id, title, content, setShowUpdateForm, token, setAllPosts }) => {
   const [newTitle, setNewTitle] = useState(title)
   const [newContent, setNewContent] = useState(content)
 
@@ -18,10 +18,12 @@ const UpdateForm = ({ id, title, content, setShowUpdateForm, token, setUserPosts
       })
     })
     const updatedPost = await res.json()
-    setUserPosts(userPosts => {
-      return userPosts.map(post => {
+    setAllPosts(prev => {
+      return prev.map(post => {
         if (post.id === updatedPost.id) {
-          return updatedPost
+          post.title = updatedPost.title
+          post.content = updatedPost.content
+          return post
         } else {
           return post
         }

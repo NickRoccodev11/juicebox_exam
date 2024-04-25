@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Login = ({ setToken }) => {
+const Login = ({ setToken, setCurrentUser }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -23,6 +23,7 @@ const Login = ({ setToken }) => {
     const loggedUser = await res.json();
     if (loggedUser.token) {
       setToken(loggedUser.token);
+      setCurrentUser(loggedUser.username)
       setPassword('');
       setUsername('');
       setIsLoggedIn(true);
@@ -37,39 +38,39 @@ const Login = ({ setToken }) => {
   }
   return (
     <div className='form-container'>
- <div className='form'>
-      <h2>Login</h2>
-      <form onSubmit={(e) => handleSubmit(e)} >
-        <label >Username:</label><br />
-        <input
-          required
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        /><br />
-        <label >Password:</label><br />
-        <input
-          required
-          type="text"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        /><br />
-        <button>Login</button>
-      </form>
-      {
-        isLoggedIn &&
-        <>
-          <p>SuccesssFul Login!</p>
-          <button onClick={() => navigate('/profile')}>Go to Profile</button>
-        </>
-      }
-      {
-        message &&
-        <p>{message}</p>
-      }
+      <div className='form'>
+        <h2>Login</h2>
+        <form onSubmit={(e) => handleSubmit(e)} >
+          <label >Username:</label><br />
+          <input
+            required
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          /><br />
+          <label >Password:</label><br />
+          <input
+            required
+            type="text"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          /><br />
+          <button>Login</button>
+        </form>
+        {
+          isLoggedIn &&
+          <>
+            <p>SuccesssFul Login!</p>
+            <button onClick={() => navigate('/profile')}>Go to Profile</button>
+          </>
+        }
+        {
+          message &&
+          <p>{message}</p>
+        }
+      </div>
     </div>
-    </div>
-   
+
   )
 }
 

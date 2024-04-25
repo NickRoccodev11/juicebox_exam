@@ -1,41 +1,24 @@
 import { useState, useEffect } from 'react'
-import { useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import SinglePost from './SinglePost'
 import UpdateForm from './UpdateForm'
 import PostForm from './PostForm'
 
-const Profile = ({ token}) => {
-  const [userPosts, setUserPosts] = useState()
+const Profile = ({ allPosts, token, currentUser, setAllPosts }) => {
+
   const [showUpdateForm, setShowUpdateForm] = useState(null)
   const [showCreate, setShowCreate] = useState(false)
   const navigate = useNavigate()
 
-  useEffect(() => {
-    const fetchUserPosts = async () => {
-      if (token) {
-        const res = await fetch('http://localhost:8000/api/posts/user', {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
-        })
-        const userPostData = await res.json();
-     
-        setUserPosts(userPostData);
-      }
-    }
-    fetchUserPosts();
-  }, [])
-
   const handleDelete = async (id) => {
-     await fetch(`http://localhost:8000/api/posts/${id}`, {
+    await fetch(`http://localhost:8000/api/posts/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       }
     })
-    setUserPosts(prev => prev.filter(post => post.id !== id))
+    setAllPosts(prev => prev.filter(post => post.id !== id))
   }
 
 
@@ -48,35 +31,42 @@ const Profile = ({ token}) => {
             {
               showCreate &&
               <PostForm
-                setUserPosts={setUserPosts}
-                userPosts={userPosts}
+                setAllPosts={setAllPosts}
                 setShowCreate={setShowCreate}
                 token={token}
+                currentUser={currentUser}
               />
             }
             <h2>My Posts</h2>
             {
-              userPosts &&
-              userPosts.map(post => {
-                return (
-                  <div key={post.id}>
-                    <SinglePost post={post} />
-
-                    <button onClick={() => setShowUpdateForm(post.id)}>edit post</button><br />
-                    {
-                      showUpdateForm === post.id &&
-                      <UpdateForm
-                        id={post.id}
-                        title={post.title}
-                        content={post.content}
-                        setShowUpdateForm={setShowUpdateForm}
+              allPosts &&
+              allPosts.map(post => {
+                if (post.author.username === currentUser) {
+                  return (
+                    <div key={post.id}>
+                      <SinglePost
+                        post={post}
                         token={token}
-                        setUserPosts={setUserPosts}
+                        allPosts={allPosts}
+                        setAllPosts={setAllPosts}
+                        currentUser={currentUser}
                       />
-                    }
-                    <button onClick={() => handleDelete(post.id)}>delete post</button>
-                  </div>
-                )
+                      <button onClick={() => setShowUpdateForm(post.id)}>edit post</button>
+                      {
+                        showUpdateForm === post.id &&
+                        <UpdateForm
+                          id={post.id}
+                          title={post.title}
+                          content={post.content}
+                          setShowUpdateForm={setShowUpdateForm}
+                          token={token}
+                          setAllPosts={setAllPosts}
+                        />
+                      }
+                      <button onClick={() => handleDelete(post.id)}>delete post</button>
+                    </div>
+                  )
+                }
               })
             }
 

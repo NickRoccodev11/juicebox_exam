@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const Register = ({ setToken }) => {
+const Register = ({ setToken, setCurrentUser }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isRegistered, setIsRegistered] = useState(false)
@@ -20,8 +20,10 @@ const Register = ({ setToken }) => {
       })
     })
     const newUser = await res.json();
+   
     if (newUser.token) {
       setToken(newUser.token)
+      setCurrentUser(newUser.username)
       setPassword('')
       setUsername('')
       setIsRegistered(true)

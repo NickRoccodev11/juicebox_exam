@@ -8,6 +8,7 @@ const getAllPosts = async () => {
           username: true,
         },
       },
+      Like: true,
     },
   });
   return allPosts;
@@ -33,6 +34,15 @@ const createPost = async (title, content, authorId) => {
         title,
         content,
         authorId,
+        Like: {},
+      },
+      include: {
+        author: {
+          select: {
+            username: true,
+          },
+        },
+        Like: true,
       },
     });
     return newPost;
@@ -76,10 +86,46 @@ const getPostsByUser = async (authorId) => {
       where: {
         authorId,
       },
+      include: {
+        Like: true,
+      },
     });
     return userPosts;
   } catch (error) {
     console.error("error finding user's posts", error);
+  }
+};
+
+const toggleLike = async (userId, postId) => {
+  try {
+    const existingLike = await prisma.Like.findUnique({
+      where: {
+        userId_postId: {
+          userId,
+          postId,
+        },
+      },
+    });
+    if (!existingLike) {
+      const newLike = await prisma.Like.create({
+        data: {
+          userId,
+          postId,
+        },
+      });
+      newLike.liked = true;
+      return newLike;
+    } else if (existingLike) {
+      const deletedLike = await prisma.Like.delete({
+        where: {
+          id: existingLike.id,
+        },
+      });
+      deletedLike.liked = false;
+      return deletedLike;
+    }
+  } catch (error) {
+    console.error("error creating like", error);
   }
 };
 
@@ -90,4 +136,5 @@ module.exports = {
   updatePost,
   deletePost,
   getPostsByUser,
+  toggleLike,
 };

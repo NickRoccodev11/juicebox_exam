@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const PostForm = ({ userPosts, setUserPosts, setShowCreate, token }) => {
+const PostForm = ({ currentUser, setAllPosts, setShowCreate, token }) => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
 
@@ -18,7 +18,7 @@ const PostForm = ({ userPosts, setUserPosts, setShowCreate, token }) => {
       })
     })
     const newPost = await res.json();
-    setUserPosts([...userPosts, newPost])
+    setAllPosts(prev=> [...prev, newPost])
     setContent('')
     setTitle('')
     setShowCreate(false)

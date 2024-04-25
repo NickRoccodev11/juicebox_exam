@@ -9,6 +9,8 @@ import Posts from './components/Posts'
 function App() {
   const [allPosts, setAllPosts] = useState([])
   const [token, setToken] = useState('')
+  const [currentUser, setCurrentUser] = useState('')
+  console.log(allPosts)
   const location = useLocation()
   const [currentPage, setCurrentPage] = useState('/')
 
@@ -21,7 +23,6 @@ function App() {
       const fetchAllPosts = async () => {
         const res = await fetch('http://localhost:8000/api/posts')
         const postsdata = await res.json()
-        console.log(postsdata)
         setAllPosts(postsdata)
       }
       fetchAllPosts()
@@ -33,10 +34,26 @@ function App() {
       <Navbar />
       <h1>JuiceBox</h1>
       <Routes>
-        <Route path='/' element={<Posts posts={allPosts} />} />
-        <Route path='/login' element={<Login setToken={setToken} />} />
-        <Route path='/register' element={<Register setToken={setToken} />} />
-        <Route path='/profile' element={<Profile token={token} />} />
+        <Route path='/' element={<Posts 
+        token={token}
+         allPosts={allPosts}
+         setAllPosts={setAllPosts}
+         currentUser={currentUser}
+         />} />
+        <Route path='/login' element={<Login
+          setCurrentUser={setCurrentUser}
+          setToken={setToken}
+        />} />
+        <Route path='/register' element={<Register
+          setCurrentUser={setCurrentUser}
+          setToken={setToken}
+        />} />
+        <Route path='/profile' element={<Profile 
+        allPosts={allPosts}
+        setAllPosts={setAllPosts}
+        currentUser={currentUser}
+        token={token} 
+        />} />
       </Routes>
     </div>
   )

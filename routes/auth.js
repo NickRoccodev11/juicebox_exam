@@ -12,8 +12,9 @@ router.post("/register", async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 12);
     const newUser = await registerUser(req.body.username, hashedPassword);
+    const username = newUser.username
     const token = jwt.sign({ id: newUser.id }, process.env.JWT);
-    res.status(201).send({ token });
+    res.status(201).send({ token, username });
   } catch (error) {
     console.error("error on auth/register route", error);
   }
@@ -33,8 +34,9 @@ router.post("/login", async (req, res) => {
         user.password
       );
       if (matchedPassword) {
+        const username = user.username
         const token = jwt.sign({ id: user.id }, process.env.JWT);
-        res.status(200).send({ token });
+        res.status(200).send({ token, username });
       }
     } else {
       res.send({ msg: "user not found" });
