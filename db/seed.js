@@ -36,7 +36,7 @@ const main = async () => {
       data: {
         title: "Thoughts on cats",
         content:
-          "My cats seem dissatisfied, yet they've eaten and played outside. Is this the conditon of domesticity? Am I dissatisfied? Or am I hungry?",
+          "how many cats makes you a cat lady? how come there's no 'cat man'? ",
         authorId: 2,
       }
     });
